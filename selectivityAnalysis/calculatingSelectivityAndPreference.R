@@ -18,7 +18,7 @@
 library(Rmisc); library(plyr); library(dplyr); library(ggplot2); library(reshape2); library(ggbiplot)
 
 # set working directory
-setwd("~/Google Drive/Ants-vs-Toads/Analysis-Matt/")
+# setwd("~/Google Drive/Ants-vs-Toads/Analysis-Matt/")
 
 # import dataframe
 df <- read.table("0-finalAntSpeciesCountsWithTraits.txt", header = T) 
