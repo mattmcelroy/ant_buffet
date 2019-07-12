@@ -40,7 +40,7 @@ df$Linear <- Linear # adding selectivity to dataframe
 head(df)
 
 ##############################################################################################################
-# (2) Use environmental abundances to simulate null expectations of selectivity metric for ant species.
+# (2a) Use environmental abundances to simulate null expectations of selectivity metric for ant species.
 ##############################################################################################################
 
 species <- df$Ant_species # create species object (factor) for ease
@@ -65,6 +65,10 @@ for (i in 1:1000){                                          # number of loops
 
 # Check out the results
 head(df2)
+
+##############################################################################################################
+# (2b) Plot the null expectations and sampled selectivity metric for ant species.
+##############################################################################################################
 
 # Melt the dataframes for plotting
 melted.df.L_real <- melt(df2, id.vars = "species", measure.vars = c("Linear") )
