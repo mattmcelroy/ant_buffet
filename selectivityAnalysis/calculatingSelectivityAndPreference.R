@@ -164,5 +164,5 @@ df_84 <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines, Hea
 df_40 <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines, HeadColor, Nitrogen, dN, Linear, Preference,)
 df_40 <- na.omit(df_40)
 
-write.table(df_84, file = "..FullSpeciesNoN.txt", sep = " ", quote = F, row.names = F, col.names = T)
-write.table(df_40, file = "..ReducedSpeciesWithN.txt", sep = " ", quote = F, row.names = F, col.names = T)
+write.table(df_84, file = "../FullSpeciesNoN.txt", sep = " ", quote = F, row.names = F, col.names = T)
+write.table(df_40, file = "../ReducedSpeciesWithN.txt", sep = " ", quote = F, row.names = F, col.names = T)
