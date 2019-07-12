@@ -10,6 +10,7 @@
 # (2) Use environmental abundances to simulate null expectations of selectivity metric for ant species.
 # (3) Assign ant species into categories "preferred", "neutral" and "avoided".
 # (4) Plot the ant species selectivity, null expectation, and color by preference. 
+# (5) Export datafiles for downstream analysis.
 
 ##############################################################################################################
 
@@ -149,4 +150,19 @@ df2analyze <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines
 df2analyze
 
 
+##############################################################################################################
+# Output files for downstream analysis
+##############################################################################################################
 
+# adding selectivity metric to dataframe
+df$Preference <- L_simulations$Linear_preference
+
+# remove nores, incidence, abundance, stomach...
+# morphology dataset for all 84 species
+df_84 <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines, HeadColor, Linear, Preference)
+# morphology + nuntrition dataset for 40 species
+df_40 <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines, HeadColor, Nitrogen, dN, Linear, Preference,)
+df_40 <- na.omit(df_40)
+
+write.table(df_84, file = "FullSpeciesNoN.txt", sep = " ", quote = F, row.names = F, col.names = T)
+write.table(df_40, file = "ReducedSpeciesWithN.txt", sep = " ", quote = F, row.names = F, col.names = T)
