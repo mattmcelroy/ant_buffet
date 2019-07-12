@@ -28,8 +28,7 @@ head(df)
 ##############################################################################################################
 
 # Selectivity Metric 
-# (Linear selectivity = r - p)
-
+# Linear selectivity = (r - p)
 
 preyprop = df$stomach / (sum(df$stomach)) # calculate proportion for prey species in stomach 
 envprop = df$abundance / (sum(df$abundance)) # calculate proportion for prey species in environment 
@@ -64,15 +63,18 @@ for (i in 1:1000){                                          # number of loops
 }
 
 # Check out the results
-head(df2)
+#head(df2)
+df2[1:5,1:5]
 
 ##############################################################################################################
 # (2b) Plot the null expectations and sampled selectivity metric for ant species.
 ##############################################################################################################
 
+L_simulations <- df2 # rename df2 to Linear (Selectivity) Simulations
+
 # Melt the dataframes for plotting
-melted.df.L_real <- melt(df2, id.vars = "species", measure.vars = c("Linear") )
-melted.df.L_sim <- melt(df2, id.vars = "species", measure.vars = paste0("sim",c(1:1000)) )
+melted.df.L_real <- melt(L_simulations, id.vars = "species", measure.vars = c("Linear") )
+melted.df.L_sim <- melt(L_simulations, id.vars = "species", measure.vars = paste0("sim",c(1:1000)) )
 
 # Plotting the null distributions and sampled selectivity values
 ggplot() +
@@ -99,16 +101,16 @@ ggplot() +
 # (3) Assign ant species to categories --> "preferred" "avoided" "neutral"
 ##############################################################################################################
 
-LinearS_preference <- vector() # empty vector
+Linear_preference <- vector() # empty vector
 
-#i <- "Anochetus_diegensis" #testing loop with species A. diegensis
+i <- "Anochetus_diegensis" #testing loop with species A. diegensis
 
 for (i in species){
-    loop.frame <- L_simulations[L_simulations$species == i,]
-    S <- loop.frame$Linear
-    loop.frame.sim <- loop.frame[,(-1:-2)]
-    m <- min(loop.frame.sim)
-    M <- max(loop.frame.sim)
+    loop.frame <- L_simulations[L_simulations$species == i,] # subset df for given species
+    S <- loop.frame$Linear # pull sampled linear selectivity value
+    loop.frame.sim <- loop.frame[,(-1:-2)] # subset so only simulated values are left
+    m <- min(loop.frame.sim) # minimum simulated value
+    M <- max(loop.frame.sim) # maximum simulated value
 
     if (S < m) {
       temp <- "avoid"
@@ -118,10 +120,10 @@ for (i in species){
       temp <- "neutral"
       }
 
-LinearS_preference[i]<-temp
+Linear_preference[i]<-temp
 }
 
-L_simulations <- cbind(L_simulations,LinearS_preference)
+L_simulations <- cbind(L_simulations,Linear_preference)
 
 head(L_simulations)
 
@@ -136,15 +138,15 @@ ggplot() +
   xlab("LinearS") +
   ylab("Ant species") +
   geom_point(data = melted.df.L_sim, aes(x = value, y = species), col = "gray") +
-  geom_point(data = melted.df.L_real, aes(x = value, y = species, col = LinearS_preference))+
+  geom_point(data = melted.df.L_real, aes(x = value, y = species, col = Linear_preference))+
   scale_color_manual(values=c("red", "black", "blue")) #avoid, null, prefer
 
 
-df$Preference <- L_simulations$LinearS_preference # adding selectivity metric to dataframe
+df$Preference <- L_simulations$Linear_preference # adding selectivity metric to dataframe
+head(df)
 
-df$Preference <- L_simulations$LinearS_preference # adding selectivity metric to dataframe
 df2analyze <- df %>% select(Ant_species, HW, HL, WL, Sculpture, Pilosity, Spines, HeadColor, Linear, Preference)
-
 df2analyze
+
 
 
