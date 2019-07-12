@@ -63,16 +63,26 @@ for (i in 1:1000){                                          # number of loops
 
 }
 
+# Check out the results
 head(df2)
 
 # Melt the dataframes for plotting
 melted.df.L_real <- melt(df2, id.vars = "species", measure.vars = c("Linear") )
 melted.df.L_sim <- melt(df2, id.vars = "species", measure.vars = paste0("sim",c(1:1000)) )
 
+# Plotting the null distributions and sampled selectivity values
+ggplot() +
+  ggtitle("Null Distribution vs. Sampled Selectivity") +
+  xlab("LinearS") +
+  ylab("Ant species") +
+  geom_point(data = melted.df.L_sim, aes(x = value, y = species), col = "gray") +
+  geom_point(data = melted.df.L_real, aes(x = value, y = species), col = "red")
+
 # Re-order the species names (factors) by "real" Linear Selectivity - apply to both datasets
 melted.df.L_real$species <- factor(melted.df.L_real$species, levels = melted.df.L_real$species[order(melted.df.L_real$value)])
 melted.df.L_sim$species <- factor(melted.df.L_sim$species, levels = melted.df.L_sim$species[order(melted.df.L_real$value)])
 
+# Re-plot the graph but ordered by selectivity values...
 ggplot() +
   ggtitle("Null Distribution vs. Sampled Selectivity") +
   xlab("LinearS") +
